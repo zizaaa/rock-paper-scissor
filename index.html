@@ -46,7 +46,7 @@
             </div>
             <div id="announce" class="h1 mt-3"></div>
             <div id="playerChoice">
-                <div class="playerBtn">
+                <div class="playerBtn text-center">
                     <button id="rock" value="rock">
                         <i class="fa-regular fa-hand-back-fist"></i>
                     </button>
@@ -143,18 +143,18 @@
 
             //display images
             if(playerAttack === 'rock'){
-                playerAttackDisplay.innerHTML = '<img src="/rock.png" id="player" alt="">';
+                playerAttackDisplay.innerHTML = '<img src="./rock.png" id="player" class="img-fluid" alt="">';
             }else if(playerAttack === 'paper'){
-                playerAttackDisplay.innerHTML = '<img src="/paper.png" id="player" alt="">';
+                playerAttackDisplay.innerHTML = '<img src="./paper.png" id="player" img-fluid alt="">';
             }else if(playerAttack === 'scissors'){
-                playerAttackDisplay.innerHTML = '<img src="/scissor.png" id="player" alt="">';
+                playerAttackDisplay.innerHTML = '<img src="./scissor.png" id="player" img-fluid alt="">';
             }
             if(randomAttack === 'rock'){
-                botAttackDisplay.innerHTML = '<img src="/rock.png" id="bot" alt="">';
+                botAttackDisplay.innerHTML = '<img src="./rock.png" img-fluid id="bot" alt="">';
             }else if(randomAttack === 'paper'){
-                botAttackDisplay.innerHTML = '<img src="/paper.png" id="bot" alt="">';
+                botAttackDisplay.innerHTML = '<img src="./paper.png" img-fluid id="bot" alt="">';
             }else if(randomAttack === 'scissors'){
-                botAttackDisplay.innerHTML = '<img src="/scissor.png" id="bot" alt="">';
+                botAttackDisplay.innerHTML = '<img src="./scissor.png" img-fluid id="bot" alt="">';
             }
 
             //generate winner
