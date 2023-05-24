@@ -226,7 +226,8 @@
 
         //quitgame
         const quitGame=()=>{
-            window.close()
+            let confirmation = confirm("Are you sure?");
+            confirmation ? window.close() : location.reload();
         }
     </script>
 
