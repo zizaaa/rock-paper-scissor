@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rock, Paper, and Scissors</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+<body>
+    <!-- <div class="container" id="gameModeContainer">
+        <div class="container" id="gameMode">
+            <h1 class="mb-3">Choose Game Mode</h1>
+            <button id="pvp">Player Vs. Player</button>
+            <button id="onePlayer">Player Vs. Bot</button>
+        </div>
+    </div> -->
+    <!-- vs bot -->
+    <div class="container" id="vsBotContainer">
+        <div id="vsBot">
+            <div id="gameScores">
+                <div id="playerNameContainer">
+                    <span id="playerName" class="fs-2 text-primary fw-bold"></span>
+                </div>
+                <div class="playersScores">
+                    <span id="playerScores" class="fs-2">0</span>
+                    <span class="fs-2">:</span>
+                    <span id="botScores" class="fs-2">0</span>   
+                </div>
+                <div id="botNameContainer">
+                    <span id="botName" class="fs-2 text-danger fw-bold"></span>
+                </div>
+            </div>
+            <div id="vsBotResult">
+                <div id="playerAttack">
+                    
+                </div>
+                <div id="versusSign" class="h1 text-danger">
+                    VS
+                </div>
+                <div id="botAttack">
+                    
+                </div>
+            </div>
+            <div id="announce" class="h1 mt-3"></div>
+            <div id="playerChoice">
+                <div class="playerBtn">
+                    <button id="rock" value="rock">
+                        <i class="fa-regular fa-hand-back-fist"></i>
+                    </button>
+                    <button id="paper" value="paper">
+                        <i class="fa-regular fa-hand"></i>
+                    </button>
+                    <button id="scissors" value="scissors">
+                        <i class="fa-solid fa-scissors"></i>
+                    </button>
+                </div>
+                <!-- play again btn -->
+                <div id="playAgainBtnDefault">
+                    <button onclick="playAgain()">Play again</button>
+                    <button onclick="quitGame()" class="bg-danger">Quit</button>
+                    <button onclick="resetScore()" class="bg-danger">Reset Score</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- get username -->
+        <div id="userNameContainer">
+            <div id="userInputField">
+                <input type="text" id="userName" placeholder="Enter username">
+                <button id="setUsername">Save</button>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        const rockBtn = document.getElementById("rock");
+        const paperBtn = document.getElementById("paper");
+        const scissorsBtn = document.getElementById("scissors");
+        const playerScoresDisplay = document.getElementById("playerScores");
+        const botScoresDisplay = document.getElementById("botScores");
+        const announce = document.getElementById("announce");
+        const playerAttackDisplay = document.getElementById('playerAttack');
+        const botAttackDisplay = document.getElementById('botAttack');
+        const modalCustom = document.getElementById('modal_custom');
+        const playerBtn = document.querySelector('.playerBtn');
+        const playAgainBtnDefault = document.getElementById('playAgainBtnDefault');
+
+        const attackChoices = ["paper","rock","scissors"];
+        const enemyName = ['pain','itachi','obito','sasuke','naruto','nagato','guy','kakashi'];
+
+        const userNameFunction =()=>{
+            
+            const savedName = sessionStorage.getItem('username');
+
+            if(savedName === null || savedName === undefined){
+                document.getElementById('userNameContainer').style.display = "flex";
+
+                document.getElementById('setUsername').addEventListener('click',()=>{
+                    const userName = document.getElementById('userName').value;
+
+                    if(userName.length <= 0){
+                        alert("Please Enter your username");
+                    }else{
+                        //user name
+                        document.getElementById('userNameContainer').style.display = "none";
+                        sessionStorage.setItem("username",userName);
+                        //botname
+                        let randomNamePick = Math.floor(Math.random()*enemyName.length);
+                        let randomName = enemyName[randomNamePick];
+                        sessionStorage.setItem("botname",randomName);
+
+                        //reload
+                        location.reload();
+                    }
+                });
+
+            }else{
+                document.getElementById('userNameContainer').style.display = "none";
+            }
+            
+            //display user name
+            document.getElementById('playerName').innerText = sessionStorage.getItem('username');
+            //display bot name
+            document.getElementById('botName').innerText = sessionStorage.getItem('botname');
+        }
+        userNameFunction();
+
+        //game scores
+        let userScores = sessionStorage.getItem("userScores") ||0;
+        let botScores = sessionStorage.getItem("botScores")||0;
+
+        const generateAttack=(e)=>{
+            let playerAttack = e.target.value
+            let randomPick = Math.floor(Math.random() * attackChoices.length);
+            let randomAttack = attackChoices[randomPick]
+
+            //hide button
+            playerBtn.style.display = 'none';
+            playAgainBtnDefault.style.display = 'block'
+
+            //display images
+            if(playerAttack === 'rock'){
+                playerAttackDisplay.innerHTML = '<img src="/rock.png" id="player" alt="">';
+            }else if(playerAttack === 'paper'){
+                playerAttackDisplay.innerHTML = '<img src="/paper.png" id="player" alt="">';
+            }else if(playerAttack === 'scissors'){
+                playerAttackDisplay.innerHTML = '<img src="/scissor.png" id="player" alt="">';
+            }
+            if(randomAttack === 'rock'){
+                botAttackDisplay.innerHTML = '<img src="/rock.png" id="bot" alt="">';
+            }else if(randomAttack === 'paper'){
+                botAttackDisplay.innerHTML = '<img src="/paper.png" id="bot" alt="">';
+            }else if(randomAttack === 'scissors'){
+                botAttackDisplay.innerHTML = '<img src="/scissor.png" id="bot" alt="">';
+            }
+
+            //generate winner
+            if(playerAttack === 'paper' && randomAttack === 'rock'){
+                announce.innerText = 'You win!'
+                userScores++;
+                saveData(userScores,botScores);
+            }else if(playerAttack==='paper' && randomAttack === 'scissors'){
+                announce.innerText = 'You lose!'
+                botScores++;
+                saveData(userScores,botScores);
+            }else if(playerAttack === 'paper' && randomAttack === 'paper'){
+                announce.innerText = 'Draw'
+            }else if(playerAttack === 'rock' && randomAttack === 'paper'){
+                announce.innerText = 'You lose!'
+                botScores++;
+                saveData(userScores,botScores);
+            }else if(playerAttack === 'rock' && randomAttack === 'scissors'){
+                announce.innerText = 'You win!'
+                userScores ++;
+                saveData(userScores,botScores);
+            }else if(playerAttack === 'rock' && randomAttack === 'rock'){
+                announce.innerText = 'Draw'
+            }else if(playerAttack === 'scissors' && randomAttack === 'rock'){
+                announce.innerText = 'You lose!'
+                botScores++;
+                saveData(userScores,botScores);
+            }else if(playerAttack === 'scissors' && randomAttack === 'paper'){
+                announce.innerText = 'You win!'
+                userScores++;
+                saveData(userScores,botScores);
+            }else if(playerAttack === 'scissors' && randomAttack === 'scissors'){
+                announce.innerText = 'Draw'
+            }
+            
+            //call and display scores
+            displayScores(userScores,botScores);
+        };
+        
+        //scores
+        const displayScores=()=>{
+            playerScoresDisplay.innerText = userScores;
+            botScoresDisplay.innerText = botScores;
+        }
+        displayScores(userScores,botScores);
+        //save to local storage
+        const saveData =(userScores,botScores)=>{
+            sessionStorage.setItem("userScores",userScores);
+            sessionStorage.setItem("botScores",botScores);
+        }
+
+        rockBtn.addEventListener('click', generateAttack);
+        paperBtn.addEventListener('click', generateAttack);
+        scissorsBtn.addEventListener('click', generateAttack);
+
+        //play gain function
+        const playAgain=()=>{
+            playerBtn.style.display = 'block';
+            playAgainBtnDefault.style.display = 'none'
+            location.reload();
+        }
+
+        //reset scores
+        const resetScore=()=>{
+            sessionStorage.removeItem('userScores')
+            sessionStorage.removeItem('botScores')
+            location.reload();
+        }
+
+        //quitgame
+        const quitGame=()=>{
+            window.close()
+        }
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
+</body>
+</html>
